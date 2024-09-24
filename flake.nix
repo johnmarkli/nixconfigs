@@ -303,9 +303,9 @@
     };
 
     home.file = {
-      ".vimrc".source = ./vim_config;
-      # ".test".source = ./test;
-      ".aerospace.toml".source = ./aerospace_config;
+      ".vimrc".source = ./vimrc;
+      ".aerospace.toml".source = ./aerospace.toml;
+      ".alacritty.toml".source = ./alacritty.toml;
     };
 };
 in
