@@ -306,6 +306,9 @@
       ".vimrc".source = ./vimrc;
       ".aerospace.toml".source = ./aerospace.toml;
       ".alacritty.toml".source = ./alacritty.toml;
+      ".config/karabiner/karabiner.json".source = ./karabiner.json;
+      ".config/nvim/init.lua".source = ./nvim/init.lua;
+      ".config/nvim/lua/chadrc.lua".source = ./nvim/lua/chadrc.lua;
     };
 };
 in
