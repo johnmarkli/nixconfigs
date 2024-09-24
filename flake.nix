@@ -302,7 +302,11 @@
       EDITOR = "nvim";
     };
 
-    home.file.".vimrc".source = ./vim_config;
+    home.file = {
+      ".vimrc".source = ./vim_config;
+      # ".test".source = ./test;
+      ".aerospace.toml".source = ./aerospace_config;
+    };
 };
 in
 {
