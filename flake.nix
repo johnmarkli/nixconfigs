@@ -69,6 +69,11 @@
         redocly
         dcmtk
         jdk
+        graphviz
+        dbeaver-bin
+        pdfgrep
+        python3
+        xmlstarlet
       ];
 
       homebrew = {
@@ -88,6 +93,10 @@
           "spaceship"
           "goose"
           "nvm"
+          "openapi-generator"
+          "sqlc"
+          "golangci-lint"
+          "mas"
         ];
         casks = [
 # "brave-browser" ## need to remove existing first
@@ -100,6 +109,9 @@
           "font-hack-nerd-font"
           "postman"
         ];
+        masApps = {
+          "Flow - Focus & Pomodoro Timer" = 1423210932;
+        };
       };
     };
   homeconfig = {config, pkgs, lib, ...}:
@@ -144,7 +156,7 @@
       grep="grep --color=auto";
       ta="tmux a -t";
       tls="tmux ls";
-      getazkey="az account get-access-token --resource-type oss-rdbms --output tsv --query accessToken | pbcopy";
+      getazkey="AZKEY=$(az account get-access-token --resource-type oss-rdbms --output tsv --query accessToken | tee >(pbcopy))";
     };
 
     programs.zsh = {
