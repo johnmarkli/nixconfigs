@@ -74,6 +74,9 @@
         pdfgrep
         python3
         xmlstarlet
+        nushell
+        gopls
+        sketchybar
       ];
 
       homebrew = {
@@ -97,6 +100,7 @@
           "sqlc"
           "golangci-lint"
           "mas"
+          
         ];
         casks = [
 # "brave-browser" ## need to remove existing first
@@ -151,8 +155,9 @@
       gco="git checkout";
       gl="git log --oneline --decorate --graph --abbrev-commit --date=relative'";
       glt="git describe --tags --abbrev=0 master";
-      l="ls -latrh --color=auto";
-      ls="ls --color=auto";
+      # l="ls -latrh --color=auto";
+      l="eza -larh";
+      ls="eza";
       grep="grep --color=auto";
       ta="tmux a -t";
       tls="tmux ls";
@@ -279,7 +284,36 @@
     programs.neovim = {
       enable = true;
       vimAlias = true;
-    vimdiffAlias = true;
+      vimdiffAlias = true;
+    };
+
+    programs.zellij = {
+      enable = true;
+    };
+    
+    programs.zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.eza = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.wezterm = {
+      enable = true;
+      enableZshIntegration = true;
+      extraConfig = ''
+      local wezterm = require 'wezterm'
+      local config = wezterm.config_builder()
+      config.front_end = "WebGpu"
+      config.hide_tab_bar_if_only_one_tab = true
+      config.color_scheme = 'Dracula'
+      config.font = wezterm.font 'Hack Nerd Font'
+      config.font_size = 14.0
+      return config
+      '';
     };
 
 # programs.alacritty = {
@@ -323,6 +357,10 @@
         source = ./nvim;
         recursive = true;
       };
+      ".config/zellij/config.kdl".source = ./zellij-config.kdl;
+      ".config/zellij/layouts/simple.kdl".source = ./zellij-simple-layout.kdl;
+      ".config/sketchybar/sketchybarrc".source = ./sketchybarrc;
+      # TODO: need sketchbar plugins for it to work
       # ".config/nvim/init.lua".source = ./nvim/init.lua;
       # ".config/nvim/lua/chadrc.lua".source = ./nvim/lua/chadrc.lua;
     };

@@ -48,7 +48,9 @@ return {
     "crispgm/nvim-go",
     ft = "go",
     config = function()
-      require("go").setup {}
+      require("go").setup {
+        linter = 'golangci-lint'
+      }
     end,
   },
 
