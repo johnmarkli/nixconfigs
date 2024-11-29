@@ -85,6 +85,7 @@
 
         taps = [
           "nikitabobko/tap"
+          # "artginzburg/tap"
         ];
         brews = [
           "golang"
@@ -100,7 +101,8 @@
           "sqlc"
           "golangci-lint"
           "mas"
-          
+          "stylua"
+          # "artginzburg/tap/sudo-touchid"
         ];
         casks = [
 # "brave-browser" ## need to remove existing first
@@ -120,6 +122,8 @@
     };
   homeconfig = {config, pkgs, lib, ...}:
     let
+    # add this to plugin def first, run darwin switch, and then copy real sha
+    # sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     tmux-fzf-session-switch = pkgs.tmuxPlugins.mkTmuxPlugin
     {
       pluginName = "tmux-fzf-session-switch";
@@ -132,6 +136,31 @@
         sha256 = "sha256-RcCwDLMOXrijt+j6C4fqFA9gBpO6YJmK1yNclGa3jgw=";
       };
     };
+    floax =
+    pkgs.tmuxPlugins.mkTmuxPlugin
+    {
+      # Note pluginName MUST be "floax"
+      pluginName = "floax";
+      version = "unstable-2024-31-08";
+      src = pkgs.fetchFromGitHub {
+        owner = "omerxx";
+        repo = "tmux-floax";
+        rev = "dab0587c5994f3b061a597ac6d63a5c9964d2883";
+        sha256 = "sha256-gp/l3SLmRHOwNV3glaMsEUEejdeMHW0CXmER4cRhYD4=";
+      };
+    };
+    # floax = pkgs.tmuxPlugins.mkTmuxPlugin
+    # {
+    #   pluginName = "floax";
+    #   # rtpFilePath = "main.tmux";
+    #   version = "unstable-2024-31-08";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "omerxx";
+    #     repo = "tmux-floax";
+    #     rev = "61c7f466b9a4ceed56f99d403250164170d586cd";
+    #     sha256 = "sha256-DOwn7XEg/L95YieUAyZU0FJ49vm2xKGUclm8WCKDizU=";
+    #   };
+    # };
   in
   {
 # this is internal compatibility configuration
@@ -155,12 +184,16 @@
       gco="git checkout";
       gl="git log --oneline --decorate --graph --abbrev-commit --date=relative'";
       glt="git describe --tags --abbrev=0 master";
-      # l="ls -latrh --color=auto";
-      l="eza -larh";
-      ls="eza";
+      l="ls -latrh --color=auto";
+      # l="eza -larh --color=always --icons";
+      # ls="eza --color=always --icons";
+      # tree="eza --tree --color=always --icons";
+      y="yazi";
+      v="nvim";
       grep="grep --color=auto";
       ta="tmux a -t";
       tls="tmux ls";
+      cat="bat --style=plain";
       getazkey="AZKEY=$(az account get-access-token --resource-type oss-rdbms --output tsv --query accessToken | tee >(pbcopy))";
     };
 
@@ -226,20 +259,42 @@
 
 # customPaneNavigationAndResize = true;
 
-      plugins = with pkgs.tmuxPlugins; [
-        cpu
-          tmux-fzf
+      plugins = 
+        [
+          # Not available in pkgs.tmuxPlugins
           {
-            plugin = tmux-fzf-session-switch;
-          }
-          {
-            plugin = dracula;
+            plugin = floax;
             extraConfig = ''
-              set -g @dracula-show-battery false
-              set -g @dracula-show-powerline true
-              set -g @dracula-refresh-rate 10
-              '';
+              set -g @floax-bind 'p'
+              set -g @floax-border-80color 'blue'
+              set -g @floax-width '50%'
+              set -g @floax-height '50%'
+            '';
           }
+        ]
+        ++ (with pkgs.tmuxPlugins; [
+        cpu
+        tmux-fzf
+        {
+          plugin = session-wizard;
+          extraConfig = ''
+            set -g @session-wizard 'f'
+          '';
+        }
+        # {
+        #   plugin = tmux-fzf-session-switch;
+        # }
+        {
+          plugin = dracula;
+          extraConfig = ''
+            set -g @dracula-show-powerline true
+            set -g @dracula-refresh-rate 10
+            set -g @dracula-show-battery false
+            set -g @dracula-show-empty-plugins false
+            set -g @dracula-show-fahrenheit false
+            set -g @dracula-show-left-icon session
+            '';
+        }
 # {
 #   plugin = tmuxPlugins.resurrect;
 #   extraConfig = "set -g @resurrect-strategy-nvim 'session'";
@@ -251,7 +306,7 @@
 #   set -g @continuum-save-interval '60' # minutes
 #   '';
 # }
-      ];
+      ]);
       extraConfig = ''
         set-option -g allow-rename off
         set-option -g focus-events on
@@ -266,6 +321,7 @@
         bind | split-window -h -c "#{pane_current_path}"
         bind - split-window -v -c "#{pane_current_path}" -p 22
 
+        # navigation with aserowy/tmux.nvim
         is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?\.?(view|n?vim?x?)(-wrapped)?(diff)?$'"
 
         bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h' 'select-pane -L'
@@ -277,6 +333,30 @@
         bind-key -T copy-mode-vi 'C-j' select-pane -D
         bind-key -T copy-mode-vi 'C-k' select-pane -U
         bind-key -T copy-mode-vi 'C-l' select-pane -R
+
+        # resize with aserowy/tmux.nvim
+        # is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+        #
+        # bind -n 'M-h' if-shell "$is_vim" 'send-keys M-h' 'resize-pane -L 1'
+        # bind -n 'M-j' if-shell "$is_vim" 'send-keys M-j' 'resize-pane -D 1'
+        # bind -n 'M-k' if-shell "$is_vim" 'send-keys M-k' 'resize-pane -U 1'
+        # bind -n 'M-l' if-shell "$is_vim" 'send-keys M-l' 'resize-pane -R 1'
+        #
+        # bind-key -T copy-mode-vi M-h resize-pane -L 1
+        # bind-key -T copy-mode-vi M-j resize-pane -D 1
+        # bind-key -T copy-mode-vi M-k resize-pane -U 1
+        # bind-key -T copy-mode-vi M-l resize-pane -R 1
+
+        # bind-key -n 'C-\' run-shell -b "$HOME/.local/bin/tmux-toggle-term.sh float"
+
+        # Don't let tmux wait for escape / Meta commands - https://github.com/tmux/tmux/issues/131#issuecomment-145853211
+        # https://neovim.io/doc/user/faq.html#faq - ESC IN TMUX OR GNU SCREEN IS DELAYED
+        set -sg escape-time 0
+
+        bind-key C-h resize-pane -L 5
+        bind-key C-j resize-pane -D 5
+        bind-key C-k resize-pane -U 5
+        bind-key C-l resize-pane -R 5
         '';
     };
 
@@ -296,10 +376,10 @@
       enableZshIntegration = true;
     };
 
-    programs.eza = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+    # programs.eza = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
 
     programs.wezterm = {
       enable = true;
@@ -315,6 +395,37 @@
       return config
       '';
     };
+
+    programs.yazi = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.bat = {
+      enable = true;
+      themes = {
+        dracula = {
+          src = pkgs.fetchFromGitHub {
+            owner = "dracula";
+            repo = "sublime"; # Bat uses sublime syntax for its themes
+              rev = "26c57ec282abcaa76e57e055f38432bd827ac34e";
+            sha256 = "019hfl4zbn4vm4154hh3bwk6hm7bdxbr1hdww83nabxwjn99ndhv";
+          };
+          file = "Dracula.tmTheme";
+        };
+      };
+    };
+    
+    # programs.atuin = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    #   settings = {
+    #     style = "compact";
+    #   };
+    #   flags = [
+    #     "--disable-up-arrow"
+    #   ];
+    # };
 
 # programs.alacritty = {
 #   enable = true;
@@ -360,6 +471,7 @@
       ".config/zellij/config.kdl".source = ./zellij-config.kdl;
       ".config/zellij/layouts/simple.kdl".source = ./zellij-simple-layout.kdl;
       ".config/sketchybar/sketchybarrc".source = ./sketchybarrc;
+      ".local/bin/tmux-toggle-term".source = ./tmux-toggle-term.sh;
       # TODO: need sketchbar plugins for it to work
       # ".config/nvim/init.lua".source = ./nvim/init.lua;
       # ".config/nvim/lua/chadrc.lua".source = ./nvim/lua/chadrc.lua;
