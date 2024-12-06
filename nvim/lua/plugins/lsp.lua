@@ -16,6 +16,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--  To jump back, press <C-t>.
 		map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
+		map(
+			"gs",
+			'<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
+			"[G]oto [Split] Definition"
+		)
+
+		-- map(
+		-- 	"gs",
+		-- 	require("telescope.builtin").lsp_definitions({ jump_type = "vsplit" }),
+		-- 	"[G]oto vertical [S]plit Definition"
+		-- )
+
 		-- Find references for the word under your cursor.
 		map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
@@ -119,7 +131,7 @@ local servers = {
 	-- clangd = {},
 	gopls = {},
 	-- pyright = {},
-	-- rust_analyzer = {},
+	rust_analyzer = {},
 	-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 	--
 	-- Some languages (like typescript) have entire language plugins that can be useful:

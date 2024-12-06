@@ -77,6 +77,13 @@
         nushell
         gopls
         sketchybar
+        # rustc
+        # rust-analyzer
+        # rustfmt
+        rustup
+        exiftool
+        mdformat
+        lazygit
       ];
 
       homebrew = {
@@ -261,16 +268,16 @@
 
       plugins = 
         [
-          # Not available in pkgs.tmuxPlugins
-          {
-            plugin = floax;
-            extraConfig = ''
-              set -g @floax-bind 'p'
-              set -g @floax-border-80color 'blue'
-              set -g @floax-width '50%'
-              set -g @floax-height '50%'
-            '';
-          }
+          # # Not available in pkgs.tmuxPlugins
+          # {
+          #   plugin = floax;
+          #   extraConfig = ''
+          #     set -g @floax-bind 'p'
+          #     set -g @floax-border-80color 'blue'
+          #     set -g @floax-width '50%'
+          #     set -g @floax-height '50%'
+          #   '';
+          # }
         ]
         ++ (with pkgs.tmuxPlugins; [
         cpu

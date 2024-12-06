@@ -32,9 +32,15 @@ require("lazy").setup({
 		},
 		config = function()
 			require("nvim-tree").setup({
-				vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>", { desc = "Toggle NvimTree" }),
+				vim.keymap.set("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", { desc = "Toggle NvimTree" }),
 			})
 		end,
+	},
+
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 
 	{
@@ -153,9 +159,10 @@ require("lazy").setup({
 				python = { "isort", "black" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				-- Conform will run multiple formatters sequentially
-				go = { "goimports", "gofmt" },
+				go = { "goimports", "gofmt", "golines" },
 				-- You can also customize some of the format options for the filetype
 				rust = { "rustfmt", lsp_format = "fallback" },
+				md = { "mdformat" },
 			},
 			-- Set default options
 			default_format_opts = {
