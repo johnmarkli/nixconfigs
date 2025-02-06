@@ -90,6 +90,19 @@ require("lazy").setup({
 		build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
 	},
 
+	{
+		"iabdelkareem/csharp.nvim",
+		dependencies = {
+			"williamboman/mason.nvim", -- Required, automatically installs omnisharp
+			"mfussenegger/nvim-dap",
+			"Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
+		},
+		config = function()
+			require("mason").setup() -- Mason setup must run before csharp, only if you want to use omnisharp
+			require("csharp").setup()
+		end,
+	},
+
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -159,7 +172,7 @@ require("lazy").setup({
 				python = { "isort", "black" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				-- Conform will run multiple formatters sequentially
-				go = { "goimports", "gofmt", "golines" },
+				go = { "goimports", "gofumpt", "golines" },
 				-- You can also customize some of the format options for the filetype
 				rust = { "rustfmt", lsp_format = "fallback" },
 				md = { "mdformat" },

@@ -67,7 +67,6 @@
         revive
         kubelogin
         redocly
-        dcmtk
         jdk
         graphviz
         dbeaver-bin
@@ -84,6 +83,9 @@
         exiftool
         mdformat
         lazygit
+        dotnet-sdk
+        entr
+        delve
       ];
 
       homebrew = {
@@ -109,6 +111,8 @@
           "golangci-lint"
           "mas"
           "stylua"
+          "gnu-sed"
+          "dcmtk"
           # "artginzburg/tap/sudo-touchid"
         ];
         casks = [
@@ -192,6 +196,7 @@
       gl="git log --oneline --decorate --graph --abbrev-commit --date=relative'";
       glt="git describe --tags --abbrev=0 master";
       l="ls -latrh --color=auto";
+      lg="lazygit";
       # l="eza -larh --color=always --icons";
       # ls="eza --color=always --icons";
       # tree="eza --tree --color=always --icons";
@@ -220,6 +225,7 @@
            export NVM_DIR="$HOME/.nvm"
     [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
     [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+        bindkey -v '^?' backward-delete-char
       '';
       envExtra = ''
         SPACESHIP_AZURE_SHOW=false
