@@ -17,7 +17,7 @@
     let
     configuration = {pkgs, ... }: {
 
-      services.nix-daemon.enable = true;
+      # services.nix-daemon.enable = true;
 # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
 
@@ -51,7 +51,10 @@
         home = "/Users/john.li";
       };
 
-      security.pam.enableSudoTouchIdAuth = true;
+      ids.gids.nixbld = 350;
+
+      # security.pam.enableSudoTouchIdAuth = true;
+      security.pam.services.sudo_local.touchIdAuth = true;
 
 # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true;
@@ -86,6 +89,7 @@
         dotnet-sdk
         entr
         delve
+        fd
       ];
 
       homebrew = {
@@ -97,7 +101,7 @@
           # "artginzburg/tap"
         ];
         brews = [
-          "golang"
+          "go"
           "cowsay"
           "mysql"
           "mysql-client"
