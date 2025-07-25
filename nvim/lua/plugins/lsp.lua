@@ -138,7 +138,7 @@ local servers = {
 	--    https://github.com/pmizio/typescript-tools.nvim
 	--
 	-- But for many setups, the LSP (`ts_ls`) will work just fine
-	-- ts_ls = {},
+	ts_ls = {},
 	--
 
 	lua_ls = {
@@ -156,6 +156,9 @@ local servers = {
 			},
 		},
 	},
+
+	-- tsserver = {},
+	angularls = {},
 }
 
 -- Ensure the servers and tools above are installed

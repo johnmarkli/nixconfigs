@@ -90,6 +90,8 @@
         entr
         delve
         fd
+        sleek
+        xan
       ];
 
       homebrew = {
@@ -117,6 +119,8 @@
           "stylua"
           "gnu-sed"
           "dcmtk"
+          "gofumpt"
+          "golines"
           # "artginzburg/tap/sudo-touchid"
         ];
         casks = [
@@ -130,9 +134,9 @@
           "font-hack-nerd-font"
           "postman"
         ];
-        masApps = {
-          "Flow - Focus & Pomodoro Timer" = 1423210932;
-        };
+        # masApps = {
+        #   "Flow - Focus & Pomodoro Timer" = 1423210932;
+        # };
       };
     };
   homeconfig = {config, pkgs, lib, ...}:
@@ -384,9 +388,9 @@
       vimdiffAlias = true;
     };
 
-    programs.zellij = {
-      enable = true;
-    };
+    # programs.zellij = {
+    #   enable = true;
+    # };
     
     programs.zoxide = {
       enable = true;
@@ -502,6 +506,7 @@
 in
 {
   darwinConfigurations."Johns-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+  # darwinConfigurations."Johns-Mac" = nix-darwin.lib.darwinSystem {
     modules = [
       configuration
         home-manager.darwinModules.home-manager {

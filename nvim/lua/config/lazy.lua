@@ -103,6 +103,12 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
+	},
+
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -171,12 +177,17 @@ require("lazy").setup({
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				html = { "prettierd", "prettier", stop_after_first = true },
 				-- Conform will run multiple formatters sequentially
 				go = { "goimports", "gofumpt", "golines" },
-				-- go = { "goimports" }, // use if want less strict auto formatting
+				-- go = { "goimports", "gofumpt" },
+				-- go = { "goimports" }, -- use if want less strict auto formatting
 				-- You can also customize some of the format options for the filetype
 				rust = { "rustfmt", lsp_format = "fallback" },
 				md = { "mdformat" },
+				yaml = { "yamlfmt" },
+				sh = { "shfmt", "shellcheck" },
 			},
 			-- Set default options
 			default_format_opts = {
