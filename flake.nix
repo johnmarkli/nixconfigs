@@ -92,6 +92,7 @@
         fd
         sleek
         xan
+        wget
       ];
 
       homebrew = {
@@ -100,7 +101,7 @@
 
         taps = [
           "nikitabobko/tap"
-          # "artginzburg/tap"
+          "schpet/tap"
         ];
         brews = [
           "go"
@@ -112,7 +113,6 @@
           "spaceship"
           "goose"
           "nvm"
-          "openapi-generator"
           "sqlc"
           "golangci-lint"
           "mas"
@@ -121,6 +121,16 @@
           "dcmtk"
           "gofumpt"
           "golines"
+          "nx"
+          "virtualenv"
+          "tcl-tk"
+          "cmake"
+          "oterm"
+          "glab"
+          "gh"
+          "yq"
+          "schpet/tap/linear"
+          "gopass"
           # "artginzburg/tap/sudo-touchid"
         ];
         casks = [
@@ -133,6 +143,7 @@
           "karabiner-elements"
           "font-hack-nerd-font"
           "postman"
+          "codex"
         ];
         # masApps = {
         #   "Flow - Focus & Pomodoro Timer" = 1423210932;
@@ -223,6 +234,8 @@
       autosuggestion.enable = true;
       defaultKeymap = "viins";
       initExtra = ''
+        export PATH="$HOME/.local/bin:$PATH"
+        export NOTION_TOKEN=$(gopass show ph/notion-cli-key)
         tns() {
           cd $1
           toplevel=$(git rev-parse --show-toplevel)
@@ -234,6 +247,9 @@
     [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
     [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
         bindkey -v '^?' backward-delete-char
+        openapi-generator() {
+          java -jar ~/bin/openapi-generator-cli.jar "$@"
+        }
       '';
       envExtra = ''
         SPACESHIP_AZURE_SHOW=false
@@ -378,6 +394,8 @@
         bind-key C-j resize-pane -D 5
         bind-key C-k resize-pane -U 5
         bind-key C-l resize-pane -R 5
+
+        bind -n S-Enter send-keys Escape "[13;2u"
         '';
     };
 

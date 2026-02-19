@@ -180,8 +180,8 @@ require("lazy").setup({
 				typescript = { "prettierd", "prettier", stop_after_first = true },
 				html = { "prettierd", "prettier", stop_after_first = true },
 				-- Conform will run multiple formatters sequentially
-				go = { "goimports", "gofumpt", "golines" },
-				-- go = { "goimports", "gofumpt" },
+				-- go = { "goimports", "gofumpt", "golines" }, -- all auto formatters
+				go = { "goimports", "gofumpt" }, -- no golines
 				-- go = { "goimports" }, -- use if want less strict auto formatting
 				-- You can also customize some of the format options for the filetype
 				rust = { "rustfmt", lsp_format = "fallback" },
